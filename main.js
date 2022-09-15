@@ -27,34 +27,36 @@ const weaponsArray = [
 let doRandom = (arrSearch) =>
 	Math.round(Math.random() * (arrSearch.length - 1));
 
-let listWithoutMurder = (numberAssesin) => {
+let listWithoutMurder = (numDiedPerson) => {
 	newList = [];
-	suspectsArray.splice(numberAssesin, 1);
+	suspectsArray.splice(numDiedPerson, 1);
+
+	// alert(`numDiedPerson= ${numDiedPerson}`);
 
 	for (element in suspectsArray) {
 		newList[element] = suspectsArray[element].nombre;
 	}
 
-	alert(`newList ${newList}`);
-
 	return newList;
 };
 
-let genereMistery = () => {
-	let asessinMuerdered = [];
+let genereAssesinMurder = () => {
+	let arrayAssesinDied = [];
 
-	let numberDied = parseInt(doRandom(suspectsArray));
+	let numDiedPerson = parseInt(doRandom(suspectsArray));
 
-	console.log("nnumero muerto", numberDied);
-	let numberAssesin = parseInt(doRandom(listWithoutMurder(numberDied)));
-	console.log("number asesino", numberAssesin);
+	console.log("numero muerto", numDiedPerson);
 
-	asessinMuerdered[0] = numberAssesin;
-	asessinMuerdered[1] = numberDied;
+	let numAssesinPerson = parseInt(doRandom(listWithoutMurder(numDiedPerson)));
 
-	alert(`asessinMuerdered ${asessinMuerdered}`);
+	console.log("number asesino", numAssesinPerson);
 
-	return asessinMuerdered;
+	arrayAssesinDied[0] = numAssesinPerson;
+	arrayAssesinDied[1] = numDiedPerson;
+
+	alert(`arrayAssesinDied ${arrayAssesinDied[0]} -${arrayAssesinDied[1]}`);
+
+	return arrayAssesinDied;
 };
 
 let verifyMistery = (asseMurder) => {
@@ -133,7 +135,7 @@ let menu = (asseMurder) => {
 
 				do {
 					optiAssesin = parseInt(prompt(`${instructions}`));
-					numberAssesin = parseInt(asseMurder[0]);
+					numAssesinPerson = parseInt(asseMurder[0]);
 
 					alert(`optiAssesin ${optiAssesin}`);
 					alert(`asseMurder= ${asseMurder[0]}`);
@@ -141,9 +143,9 @@ let menu = (asseMurder) => {
 					coins++;
 
 					// alert(`coins=${coins}`);
-				} while (optiAssesin !== numberAssesin && coins < 5);
+				} while (optiAssesin !== numAssesinPerson && coins < 5);
 
-				if (optiAssesin === numberAssesin) {
+				if (optiAssesin === numAssesinPerson) {
 					alert(`Ganaste fue ${listOpWiAss[asseMurder[0]]}`);
 					selectUser = "s";
 					oportunities[0] = true;
@@ -174,10 +176,12 @@ let menu = (asseMurder) => {
 };
 
 let main = () => {
-	let x;
+	arrToPlay = menu(genereAssesinMurder());
 
-	// alert(` x=== ${x}`);
-	menu(genereMistery());
+	for (element in arrToPlay) {
+		// newList[element] =
+		alert(`		${arrToPlay[element].nombre}`);
+	}
 };
 
 main();
