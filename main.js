@@ -27,15 +27,15 @@ const weaponsArray = [
 let doRandom = (arrSearch) =>
 	Math.round(Math.random() * (arrSearch.length - 1));
 
-let listWithoutMurder = (numDiedPerson) => {
-	newList = [];
-	suspectsArray.splice(numDiedPerson, 1);
+let listWithoutMurder = (nameDiedPerson) => {
+	let arrWitMurder = [];
 
-	// alert(`numDiedPerson= ${numDiedPerson}`);
+	let newList = suspectsArray.filter((item) => item.nombre !== nameDiedPerson);
 
-	for (element in suspectsArray) {
-		newList[element] = suspectsArray[element].nombre;
-	}
+	// for (element in newList) {
+	// 	arrWitMurder = newList[element].nombre;
+	// 	alert(`== ${newList[element].nombre}`);
+	// }
 
 	return newList;
 };
@@ -45,23 +45,24 @@ let genereAssesinMurder = () => {
 
 	let numDiedPerson = parseInt(doRandom(suspectsArray));
 
-	console.log("numero muerto", numDiedPerson);
+	// alert(`"numero muerto" ${numDiedPerson}`);
 
-	let numAssesinPerson = parseInt(doRandom(listWithoutMurder(numDiedPerson)));
+	arrayAssesinDied[1] = suspectsArray[numDiedPerson].nombre;
 
-	console.log("number asesino", numAssesinPerson);
+	// alert(`arrayAssesinDied[1]  ${arrayAssesinDied[1]}`);
 
-	arrayAssesinDied[0] = numAssesinPerson;
-	arrayAssesinDied[1] = numDiedPerson;
+	let listNew = listWithoutMurder(arrayAssesinDied[1]);
 
-	alert(`arrayAssesinDied ${arrayAssesinDied[0]} -${arrayAssesinDied[1]}`);
+	arrayAssesinDied[0] = listNew;
+
+	// console.log("number asesino", numAssesinPerson);
+
+	// alert(`Asesino= ${arrayAssesinDied[0]} - Muerto= ${arrayAssesinDied[1]}`);
 
 	return arrayAssesinDied;
 };
 
 let verifyMistery = (asseMurder) => {
-	console.log("array asesinos", asseMurder[0]);
-
 	dataMurder = ` el asesino fue ${suspectsArray[asseMurder[0]].nombre}  
 	}
 		 		 y mato a ${suspectsArray[asseMurder[1]].nombre} 
@@ -83,17 +84,17 @@ let oportunities = [false, false, false, false];
 let menu = (asseMurder) => {
 	let coins = 0;
 
-	let fullCase = verifyMistery(asseMurder);
+	let arrWitMurd = asseMurder[0];
 
-	console.log("muerto menu", asseMurder[1]);
-	console.log(
-		"muerto menu nombre",
-		suspectsArray[parseInt(asseMurder[1])].nombre
-	);
+	console.log(`que tiene ${arrWitMurd[0].nombre}`);
 
-	for (element in suspectsArray) {
-		console.log(`${element} ${suspectsArray[element].nombre}`);
-	}
+	// for (element in arrWitMurd) {
+	// 	alert(`== ${arrWitMurd[element].nombre}`);
+	// }
+
+	let numAssesin = parseInt(doRandom(arrWitMurd));
+
+	alert(`numAssesin ${numAssesin}`);
 
 	do {
 		// alert(`oportunities ${oportunities}`);
@@ -101,9 +102,10 @@ let menu = (asseMurder) => {
 
 		let selectUser = parseInt(
 			prompt(
-				`"Bienvenido a Clue the Office \n mataron a " ${
-					suspectsArray[parseInt(asseMurder[1])].nombre
-				} "es tu deber adivinar en 5 oportunidades, quién lo mato, con que lo mató y donde lo mató\n "
+				`"Bienvenido a Clue the Office \n mataron a "
+				 ${
+						asseMurder[1]
+					} "es tu deber adivinar en 5 oportunidades, quién lo mato, con que lo mató y donde lo mató\n "
 					  ${
 							oportunities[0] == true
 								? "Asesino adivinado "
@@ -119,13 +121,13 @@ let menu = (asseMurder) => {
 				let instructions = "",
 					optiAssesin = 0;
 				counter = 0;
-				listOpWiAss = listWithoutMurder(parseInt(asseMurder[1]));
+				// listOpWiAss = listWithoutMurder(parseInt(asseMurder[1]));
 
-				alert(`listOpWiAss ${listOpWiAss}`);
+				// alert(`listOpWiAss ${listOpWiAss}`);
 
-				for (element in listOpWiAss) {
+				for (element in arrWitMurd) {
 					instructions =
-						instructions + `${counter}.- ${listOpWiAss[element]}\n`;
+						instructions + `${counter}.- ${arrWitMurd[element].nombre}\n`;
 					counter++;
 				}
 
@@ -135,22 +137,21 @@ let menu = (asseMurder) => {
 
 				do {
 					optiAssesin = parseInt(prompt(`${instructions}`));
-					numAssesinPerson = parseInt(asseMurder[0]);
 
 					alert(`optiAssesin ${optiAssesin}`);
-					alert(`asseMurder= ${asseMurder[0]}`);
+					alert(`asseMurder= ${numAssesin}`);
 
 					coins++;
 
 					// alert(`coins=${coins}`);
-				} while (optiAssesin !== numAssesinPerson && coins < 5);
+				} while (numAssesin !== optiAssesin && coins < 5);
 
-				if (optiAssesin === numAssesinPerson) {
-					alert(`Ganaste fue ${listOpWiAss[asseMurder[0]]}`);
+				if (optiAssesin === numAssesin) {
+					alert(`Ganaste fue ${arrWitMurd[numAssesin].nombre}`);
 					selectUser = "s";
 					oportunities[0] = true;
 				} else if (coins === 5) {
-					alert(`Perdiste fue ${listOpWiAss[asseMurder[0]]}`);
+					alert(`Perdiste fue ${arrWitMurd[numAssesin].nombre}`);
 					selectUser = "s";
 				}
 
@@ -177,11 +178,20 @@ let menu = (asseMurder) => {
 
 let main = () => {
 	arrToPlay = menu(genereAssesinMurder());
-
-	for (element in arrToPlay) {
-		// newList[element] =
-		alert(`		${arrToPlay[element].nombre}`);
-	}
 };
 
 main();
+
+// let nameDiedPersonz = "Michael Scott";
+
+// let test = () => {
+// 	let newList = suspectsArray.filter((item) => item.nombre !== nameDiedPersonz);
+
+// 	console.log("newList", newList);
+
+// 	for (element in newList) {
+// 		alert(`ele  ${newList[element].nombre}`);
+// 	}
+// };
+
+// test();
