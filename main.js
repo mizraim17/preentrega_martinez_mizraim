@@ -28,19 +28,14 @@ let doRandom = (arrSearch) =>
 	Math.round(Math.random() * (arrSearch.length - 1));
 
 let listWithoutMurder = (nameDiedPerson) => {
-	let arrWitMurder = [];
-
-	let newList = suspectsArray.filter((item) => item.nombre !== nameDiedPerson);
-
-	// for (element in newList) {
-	// 	arrWitMurder = newList[element].nombre;
-	// 	alert(`== ${newList[element].nombre}`);
-	// }
+	let arrWitMurder = [],
+		newList;
+	newList = suspectsArray.filter((item) => item.nombre !== nameDiedPerson);
 
 	return newList;
 };
 
-let genereAssesinMurder = () => {
+let genereAssesinMurder = (fue) => {
 	let arrayAssesinDied = [];
 
 	let numDiedPerson = parseInt(doRandom(suspectsArray));
@@ -86,15 +81,13 @@ let menu = (asseMurder) => {
 
 	let arrWitMurd = asseMurder[0];
 
-	console.log(`que tiene ${arrWitMurd[0].nombre}`);
-
-	// for (element in arrWitMurd) {
-	// 	alert(`== ${arrWitMurd[element].nombre}`);
-	// }
-
 	let numAssesin = parseInt(doRandom(arrWitMurd));
 
+	let numWeapon = parseInt(doRandom(weaponsArray));
+	let numRoom = parseInt(doRandom(roomsArray));
+
 	alert(`numAssesin ${numAssesin}`);
+	alert(`numWeapon ${numWeapon}`);
 
 	do {
 		// alert(`oportunities ${oportunities}`);
@@ -102,16 +95,19 @@ let menu = (asseMurder) => {
 
 		let selectUser = parseInt(
 			prompt(
-				`"Bienvenido a Clue the Office \n mataron a "
-				 ${
-						asseMurder[1]
-					} "es tu deber adivinar en 5 oportunidades, quién lo mato, con que lo mató y donde lo mató\n "
-					  ${
-							oportunities[0] == true
-								? "Asesino adivinado "
-								: "1.-Adivinar el nombre del asesino\n"
-						}
-				${oportunities[2] == true ? "Arma adivinada" : "2. Adivinar Arma\n"}  `
+				`"Bienvenido a Clue version the Office mataron a: "
+				${asseMurder[1]} "es tu deber adivinar en 5 oportunidades,"
+				"quién lo mato, con que lo mató y donde lo mató\n "${
+					oportunities[0] == true
+						? "Asesino adivinado \n"
+						: "1.-Adivinar el nombre del asesino\n"
+				}
+				${oportunities[1] == true ? "Arma adivinada" : " 2. Adivinar Arma\n"}
+				${
+					oportunities[1] == true
+						? "Habitación adivinada"
+						: " 3. Adivinar Habitación\n"
+				}  `
 			)
 		);
 
@@ -121,9 +117,6 @@ let menu = (asseMurder) => {
 				let instructions = "",
 					optiAssesin = 0;
 				counter = 0;
-				// listOpWiAss = listWithoutMurder(parseInt(asseMurder[1]));
-
-				// alert(`listOpWiAss ${listOpWiAss}`);
 
 				for (element in arrWitMurd) {
 					instructions =
@@ -155,11 +148,80 @@ let menu = (asseMurder) => {
 					selectUser = "s";
 				}
 
-				// alert(`selectUser=  ${selectUser}`);
+				break;
+
+			case 2:
+				alert("entro al case 2");
+				const TXT2 = "Adivina el arma del asesino";
+				let instructions2 = "",
+					optiWeapons = 0;
+				counter2 = 0;
+
+				for (element in weaponsArray) {
+					instructions2 =
+						instructions2 + `${counter2}.- ${weaponsArray[element]}\n`;
+					counter2++;
+				}
+
+				instructions2 + TXT2;
+
+				do {
+					optiWeapons = parseInt(prompt(`${instructions2}`));
+
+					alert(`optiAssesin ${optiWeapons}`);
+					alert(`asseMurder= ${numWeapon}`);
+
+					coins++;
+
+					alert(`numWeapon=${numWeapon}`);
+				} while (numWeapon !== optiWeapons && coins < 5);
+
+				if (numWeapon === optiWeapons) {
+					alert(`Ganaste el arma usada fue ${weaponsArray[numWeapon]}`);
+					selectUser = "s";
+					oportunities[1] = true;
+				} else if (coins === 5) {
+					alert(`Perdiste el arma usada era ${weaponsArray[numWeapon]}`);
+					selectUser = "s";
+				}
 
 				break;
-			case 2:
-				alert("2.-Adivina ");
+
+			case 3:
+				alert("entro al case 2");
+				const TXT3 = "Adivina donde fue el asesinato";
+				let instructions3 = "",
+					optiPlace = 0;
+				counter3 = 0;
+
+				for (element in roomsArray) {
+					instructions3 =
+						instructions3 + `${counter3}.- ${roomsArray[element]}\n`;
+					counter3++;
+				}
+
+				instructions3 + TXT3;
+
+				do {
+					optiPlace = parseInt(prompt(`${instructions3}`));
+
+					alert(`optiAssesin ${optiPlace}`);
+					alert(`asseMurder= ${numRoom}`);
+
+					coins++;
+
+					alert(`numRoom=${numRoom}`);
+				} while (numRoom !== optiPlace && coins < 5);
+
+				if (numRoom === optiPlace) {
+					alert(`Ganaste el lugar es la ${roomsArray[numRoom]}`);
+					selectUser = "s";
+					oportunities[2] = true;
+				} else if (coins === 5) {
+					alert(`Perdiste el lugar era ${roomsArray[numRoom]}`);
+					selectUser = "s";
+				}
+
 				break;
 
 			default:
@@ -181,17 +243,3 @@ let main = () => {
 };
 
 main();
-
-// let nameDiedPersonz = "Michael Scott";
-
-// let test = () => {
-// 	let newList = suspectsArray.filter((item) => item.nombre !== nameDiedPersonz);
-
-// 	console.log("newList", newList);
-
-// 	for (element in newList) {
-// 		alert(`ele  ${newList[element].nombre}`);
-// 	}
-// };
-
-// test();
