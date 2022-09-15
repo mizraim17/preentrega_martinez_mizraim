@@ -1,4 +1,4 @@
-///juego de Clue
+///Game of clue version The office
 
 let selectUser = 0;
 
@@ -57,24 +57,7 @@ let genereAssesinMurder = (fue) => {
 	return arrayAssesinDied;
 };
 
-let verifyMistery = (asseMurder) => {
-	dataMurder = ` el asesino fue ${suspectsArray[asseMurder[0]].nombre}  
-	}
-		 		 y mato a ${suspectsArray[asseMurder[1]].nombre} 
-	}
-
-		 	con ${weaponsArray[doRandom(weaponsArray)]},
-			en ${roomsArray[doRandom(roomsArray)]}	
-		`;
-
-	console.log("dataMurder", dataMurder);
-
-	alert(`quien fue  ${dataMurder}`);
-
-	return dataMurder;
-};
-
-let oportunities = [false, false, false, false];
+let oportunities = [false, false, false];
 
 let menu = (asseMurder) => {
 	let coins = 0;
@@ -85,13 +68,15 @@ let menu = (asseMurder) => {
 
 	let numWeapon = parseInt(doRandom(weaponsArray));
 	let numRoom = parseInt(doRandom(roomsArray));
+	let gameWin = 0;
 
-	alert(`numAssesin ${numAssesin}`);
-	alert(`numWeapon ${numWeapon}`);
+	// alert(`numAssesin ${numAssesin}`);
+	// alert(`numWeapon ${numWeapon}`);
+	// alert(`numnumRoomWeapon ${numRoom}`);
 
 	do {
 		// alert(`oportunities ${oportunities}`);
-		alert(`coins ${coins}`);
+		// alert(`coins ${coins}`);
 
 		let selectUser = parseInt(
 			prompt(
@@ -104,12 +89,18 @@ let menu = (asseMurder) => {
 				}
 				${oportunities[1] == true ? "Arma adivinada" : " 2. Adivinar Arma\n"}
 				${
-					oportunities[1] == true
+					oportunities[2] == true
 						? "Habitación adivinada"
 						: " 3. Adivinar Habitación\n"
 				}  `
 			)
 		);
+
+		for (i = 0; i < 3; i++) {
+			if (oportunities[i] === true) {
+				gameWin++;
+			}
+		}
 
 		switch (selectUser) {
 			case 1:
@@ -131,17 +122,17 @@ let menu = (asseMurder) => {
 				do {
 					optiAssesin = parseInt(prompt(`${instructions}`));
 
-					alert(`optiAssesin ${optiAssesin}`);
-					alert(`asseMurder= ${numAssesin}`);
+					// alert(`optiAssesin ${optiAssesin}`);
+					// alert(`asseMurder= ${numAssesin}`);
 
 					coins++;
 
 					// alert(`coins=${coins}`);
-				} while (numAssesin !== optiAssesin && coins < 5);
+				} while (numAssesin !== optiAssesin && coins < 7);
 
 				if (optiAssesin === numAssesin) {
 					alert(`Ganaste fue ${arrWitMurd[numAssesin].nombre}`);
-					selectUser = "s";
+					selectUser = 0;
 					oportunities[0] = true;
 				} else if (coins === 5) {
 					alert(`Perdiste fue ${arrWitMurd[numAssesin].nombre}`);
@@ -151,7 +142,6 @@ let menu = (asseMurder) => {
 				break;
 
 			case 2:
-				alert("entro al case 2");
 				const TXT2 = "Adivina el arma del asesino";
 				let instructions2 = "",
 					optiWeapons = 0;
@@ -168,19 +158,17 @@ let menu = (asseMurder) => {
 				do {
 					optiWeapons = parseInt(prompt(`${instructions2}`));
 
-					alert(`optiAssesin ${optiWeapons}`);
-					alert(`asseMurder= ${numWeapon}`);
+					// alert(`optiAssesin ${optiWeapons}`);
+					// alert(`numWeapon=${numWeapon}`);
 
 					coins++;
-
-					alert(`numWeapon=${numWeapon}`);
-				} while (numWeapon !== optiWeapons && coins < 5);
+				} while (numWeapon !== optiWeapons && coins < 7);
 
 				if (numWeapon === optiWeapons) {
 					alert(`Ganaste el arma usada fue ${weaponsArray[numWeapon]}`);
 					selectUser = "s";
 					oportunities[1] = true;
-				} else if (coins === 5) {
+				} else if (coins === 7) {
 					alert(`Perdiste el arma usada era ${weaponsArray[numWeapon]}`);
 					selectUser = "s";
 				}
@@ -188,7 +176,6 @@ let menu = (asseMurder) => {
 				break;
 
 			case 3:
-				alert("entro al case 2");
 				const TXT3 = "Adivina donde fue el asesinato";
 				let instructions3 = "",
 					optiPlace = 0;
@@ -205,13 +192,11 @@ let menu = (asseMurder) => {
 				do {
 					optiPlace = parseInt(prompt(`${instructions3}`));
 
-					alert(`optiAssesin ${optiPlace}`);
-					alert(`asseMurder= ${numRoom}`);
+					// alert(`optiAssesin ${optiPlace}`);
+					// alert(`numRoom=${numRoom}`);
 
 					coins++;
-
-					alert(`numRoom=${numRoom}`);
-				} while (numRoom !== optiPlace && coins < 5);
+				} while (numRoom !== optiPlace && coins < 7);
 
 				if (numRoom === optiPlace) {
 					alert(`Ganaste el lugar es la ${roomsArray[numRoom]}`);
@@ -231,10 +216,18 @@ let menu = (asseMurder) => {
 			case "s":
 				break;
 		}
-	} while (selectUser === "s" || selectUser === "S" || coins < 5);
 
-	if (coins == 5) {
+		// alert(`gameWin ${gameWin}`);
+		alert(`coins ${coins}`);
+	} while (selectUser !== "s" && coins !== 7 && gameWin !== 3);
+
+	if (coins === 7) {
 		alert("game over");
+	} else if (gameWin == 3) {
+		alert(
+			`Felicidades ganaste el juego, \n ${arrWitMurd[numAssesin].nombre} mato a
+			 ${asseMurder[1]} con ${weaponsArray[numWeapon]}  en ${roomsArray[numRoom]}`
+		);
 	}
 };
 
